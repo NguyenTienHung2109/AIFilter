@@ -1,0 +1,2 @@
+../../data/* filter=lfs diff=lfs merge=lfs -text
+D:/ilib/AIFilter/data/* filter=lfs diff=lfs merge=lfs -text

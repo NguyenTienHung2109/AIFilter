@@ -41,6 +41,8 @@ class DlibDataset(Dataset):
     def _load_data(self, data_dir: str, xml_file: str):
         """Load data from xml file."""
         xml_path = os.path.join(data_dir, xml_file)
+        cwd = os.getcwd()
+        xml_path = os.path.join(cwd, xml_path)
         root = ET.parse(xml_path).getroot()
         samples = root.find('images')
         samples = [self._get_cropped_labeled_sample(
