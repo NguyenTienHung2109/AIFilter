@@ -124,7 +124,6 @@ The directory structure of new project looks like this:
 ├── .gitignore                <- List of files ignored by git
 ├── .pre-commit-config.yaml   <- Configuration of pre-commit hooks for code formatting
 ├── .project-root             <- File for inferring the position of project root directory
-├── environment.yaml          <- File for installing conda environment
 ├── Makefile                  <- Makefile with commands like `make train` or `make test`
 ├── pyproject.toml            <- Configuration options for testing and linting
 ├── requirements.txt          <- File for installing python dependencies
@@ -1217,9 +1216,9 @@ ______________________________________________________________________
 
 What it does
 
-## Installation
+## How to run
 
-#### Pip
+Install dependencies
 
 ```bash
 # clone project
@@ -1236,22 +1235,6 @@ conda activate myenv
 # install requirements
 pip install -r requirements.txt
 ```
-
-#### Conda
-
-```bash
-# clone project
-git clone https://github.com/YourGithubName/your-repo-name
-cd your-repo-name
-
-# create conda environment and install dependencies
-conda env create -f environment.yaml
-
-# activate conda environment
-conda activate myenv
-```
-
-## How to run
 
 Train model with default configuration
 

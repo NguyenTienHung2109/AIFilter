@@ -128,4 +128,22 @@ class MNISTDataModule(LightningDataModule):
 
 
 if __name__ == "__main__":
-    _ = MNISTDataModule()
+    import pyrootutils
+    from omegaconf import DictConfig
+    import hydra
+
+    path = pyrootutils.find_root(search_from=__file__, indicator=".project-root")
+    config_path = str(path / "configs" / "data")
+    print("root", path, config_path)
+    # pyrootutils.setup_root(__file__, indicator=".project-root", pythonpath=True)
+
+    @hydra.main(version_base="1.3", config_path=config_path, config_name="mnist.yaml")
+    def main(cfg: DictConfig):
+        print(cfg)
+        datamodule: LightningDataModule = hydra.utils.instantiate(cfg)
+        datamodule.prepare_data()
+        datamodule.setup()
+        loader = datamodule.train_dataloader()
+        print("n_batch", len(loader))
+
+    main()

@@ -6,7 +6,10 @@ from omegaconf import DictConfig
 from pytorch_lightning import LightningDataModule, LightningModule, Trainer
 from pytorch_lightning.loggers import Logger
 
+import torchvision
+
 pyrootutils.setup_root(__file__, indicator=".project-root", pythonpath=True)
+from src.data.dlib_datamodule import TransformDataset  # noqa: E402
 # ------------------------------------------------------------------------------------ #
 # the setup_root above is equivalent to:
 # - adding project root dir to PYTHONPATH
@@ -71,11 +74,18 @@ def evaluate(cfg: DictConfig) -> Tuple[dict, dict]:
 
     log.info("Starting testing!")
     trainer.test(model=model, datamodule=datamodule, ckpt_path=cfg.ckpt_path)
+    metric_dict = trainer.callback_metrics
 
     # for predictions use trainer.predict(...)
-    # predictions = trainer.predict(model=model, dataloaders=dataloaders, ckpt_path=cfg.ckpt_path)
-
-    metric_dict = trainer.callback_metrics
+    log.info("Starting predictions!")
+    predictions = trainer.predict(model=model, datamodule=datamodule, ckpt_path=cfg.ckpt_path)
+    print("predictions:", len(predictions), type(predictions[0]), predictions[0].shape)
+    for pred, (bx, by) in zip(predictions, datamodule.predict_dataloader()):
+        print("pred:", pred.shape, "batch:", bx.shape, by.shape)
+        annotated_image = TransformDataset.annotate_tensor(bx, pred)
+        print("output_path:", cfg.paths.output_dir + "/eval_result.png")
+        torchvision.utils.save_image(annotated_image, cfg.paths.output_dir + "/eval_result.png")
+        break
 
     return metric_dict, object_dict
 

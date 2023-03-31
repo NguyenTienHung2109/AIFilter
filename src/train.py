@@ -7,7 +7,11 @@ from omegaconf import DictConfig
 from pytorch_lightning import Callback, LightningDataModule, LightningModule, Trainer
 from pytorch_lightning.loggers import Logger
 
+import torch
+import os
+
 pyrootutils.setup_root(__file__, indicator=".project-root", pythonpath=True)
+config_path = os.path.join(os.environ["PROJECT_ROOT"], "configs")
 # ------------------------------------------------------------------------------------ #
 # the setup_root above is equivalent to:
 # - adding project root dir to PYTHONPATH
@@ -100,7 +104,7 @@ def train(cfg: DictConfig) -> Tuple[dict, dict]:
     return metric_dict, object_dict
 
 
-@hydra.main(version_base="1.3", config_path="../configs", config_name="train.yaml")
+@hydra.main(version_base="1.3", config_path=config_path, config_name="train.yaml")
 def main(cfg: DictConfig) -> Optional[float]:
 
     # train the model
@@ -116,4 +120,5 @@ def main(cfg: DictConfig) -> Optional[float]:
 
 
 if __name__ == "__main__":
+    torch.set_float32_matmul_precision('medium')
     main()
