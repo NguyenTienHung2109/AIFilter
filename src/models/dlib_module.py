@@ -85,7 +85,7 @@ class DlibLitModule(LightningModule):
         # remember to always return loss from `training_step()` or backpropagation will fail!
         return {"loss": loss, "preds": preds, "targets": targets}
 
-    def on_train_epoch_end(self, outputs: List[Any]):
+    def on_train_epoch_end(self, *args, **kwargs):
         # `outputs` is a list of dicts returned from `training_step()`
 
         # Warning: when overriding `training_epoch_end()`, lightning accumulates outputs from all batches of the epoch
@@ -96,7 +96,8 @@ class DlibLitModule(LightningModule):
         # or using `on_train_epoch_end()` instead which doesn't accumulate outputs
 
         pass
-
+    def on_on_test_epoch_end(self, * args, **kwargs):
+        pass
     def validation_step(self, batch: Any, batch_idx: int):
         loss, preds, targets = self.model_step(batch)
 
