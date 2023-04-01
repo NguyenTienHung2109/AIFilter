@@ -133,7 +133,7 @@ class TransformDataset(Dataset):
         images = denormalize(image)
         images_to_save = []
         for lm, img in zip(landmarks, images):
-            img = img.permute(1, 2, 0).numpy()*255
+            img = img.permute(1, 2, 0).cpu().numpy()*255
             h, w, _ = img.shape
             lm = (lm + 0.5) * np.array([w, h]) # convert to image pixel coordinates
             img = DlibDataset.annotate_image(Image.fromarray(img.astype(np.uint8)), lm)
