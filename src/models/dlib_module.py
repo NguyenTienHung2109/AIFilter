@@ -107,7 +107,6 @@ class DlibLitModule(LightningModule):
     
     def validation_step(self, batch: Any, batch_idx: int):
         
-        self.logger = WandbLogger(project="AIFilter")
         bx, by = batch
         loss, preds, targets = self.model_step(batch)
         annotated_batch = TransformDataset.annotate_tensor(bx, preds)
