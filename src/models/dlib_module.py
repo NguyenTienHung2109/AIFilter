@@ -1,10 +1,13 @@
 from typing import Any, List
 
 import torch
+import torchvision
+import wandb
 from pytorch_lightning import LightningModule
 from torchmetrics import MinMetric, MeanMetric
 from torchmetrics.regression.mae import MeanAbsoluteError
-
+from src.data.dlib_datamodule import TransformDataset
+from pytorch_lightning.loggers import WandbLogger
 
 class DlibLitModule(LightningModule):
     """Example of LightningModule for MNIST classification.
@@ -28,12 +31,15 @@ class DlibLitModule(LightningModule):
         scheduler: torch.optim.lr_scheduler,
     ):
         super().__init__()
-
+        
         # this line allows to access init params with 'self.hparams' attribute
         # also ensures init params will be stored in ckpt
         self.save_hyperparameters(logger=False, ignore=['net'])
 
+        
         self.net = net
+        self.output_path = "outputs/annotated_batch"
+
 
         # loss function
         self.criterion = torch.nn.MSELoss()
@@ -96,11 +102,19 @@ class DlibLitModule(LightningModule):
         # or using `on_train_epoch_end()` instead which doesn't accumulate outputs
 
         pass
-    def on_on_test_epoch_end(self, * args, **kwargs):
+    def on_test_epoch_end(self, *args, **kwargs):
         pass
+    
     def validation_step(self, batch: Any, batch_idx: int):
+        
+        self.logger = WandbLogger(project="AIFilter")
+        bx, by = batch
         loss, preds, targets = self.model_step(batch)
-
+        annotated_batch = TransformDataset.annotate_tensor(bx, preds)
+        path = self.output_path + f"batch{batch_idx}.png"
+        torchvision.utils.save_image(annotated_batch, path)
+        wandb_image = wandb.Image(annotated_batch)
+        self.logger.experiment.log({"val/image": wandb_image})
         # update and log metrics
         self.val_loss(loss)
         self.val_mae(preds, targets)
@@ -135,9 +149,6 @@ class DlibLitModule(LightningModule):
     def predict_step(self, batch: Any, batch_idx: int, dataloader_idx: int = 0) -> Any:
         _, preds, _ = self.model_step(batch)
         return preds
-
-    def test_epoch_end(self, outputs: List[Any]):
-        pass
 
     def configure_optimizers(self):
         """Choose what optimizers and learning-rate schedulers to use in your optimization.

@@ -1,0 +1,41 @@
+{
+    "os": "Windows-10-10.0.22621-SP0",
+    "python": "3.9.16",
+    "heartbeatAt": "2023-03-31T19:40:00.031565",
+    "startedAt": "2023-03-31T19:39:58.167701",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "-m src.train",
+    "git": {
+        "remote": "https://github.com/NguyenTienHung2109/AIFilter.git",
+        "commit": "312cc32bb3ec6174b133d1a45dcc7387b4d217ae"
+    },
+    "email": "100121387+NguyenTienHung2109@users.noreply.github.com",
+    "root": "D:/ilib/AIFilter",
+    "host": "DESKTOP-L3LQ2NL",
+    "username": "hungbth",
+    "executable": "C:\\Users\\dell\\miniconda3\\python.exe",
+    "cpu_count": 6,
+    "cpu_count_logical": 12,
+    "cpu_freq": {
+        "current": 2100.0,
+        "min": 0.0,
+        "max": 2100.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 2100.0,
+            "min": 0.0,
+            "max": 2100.0
+        }
+    ],
+    "disk": {
+        "total": 73.55956649780273,
+        "used": 13.6400146484375
+    },
+    "memory": {
+        "total": 7.351814270019531
+    }
+}
