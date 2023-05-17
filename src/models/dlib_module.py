@@ -102,7 +102,7 @@ class DlibLitModule(LightningModule):
         # or using `on_train_epoch_end()` instead which doesn't accumulate outputs
 
         pass
-    def on_test_epoch_end(self, *args, **kwargs):
+    def on_test_epoch_end(self):
         pass
     
     def validation_step(self, batch: Any, batch_idx: int):

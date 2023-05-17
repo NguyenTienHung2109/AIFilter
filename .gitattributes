@@ -2,3 +2,6 @@
 D:/ilib/AIFilter/data/* filter=lfs diff=lfs merge=lfs -text
 D:/ilib/AIFilter/outputs/* filter=lfs diff=lfs merge=lfs -text
 ../../outputs/* filter=lfs diff=lfs merge=lfs -text
+D:/ilib/AIFilter/logs/* filter=lfs diff=lfs merge=lfs -text
+D:/ilib/AIFilter/logs filter=lfs diff=lfs merge=lfs -text
+D:/ilib/AIFilter/logs/train/runs/2023-04-04_01-26-31/last.ckpt filter=lfs diff=lfs merge=lfs -text
